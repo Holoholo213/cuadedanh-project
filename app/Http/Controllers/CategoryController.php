@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
-use App\Models\Category;
+use App\Services\CategoryService;
 
 class CategoryController extends Controller
 {
+    private $categoryService;
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,17 +20,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $categories = $this->categoryService->getAllCategory();
+        return view("manager.category.index", compact("categories"));
     }
 
     /**
@@ -36,29 +32,19 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
+        $store = $this->categoryService->createCategory($request->all());
+        if(!$store){
+            $noti = [
+                'message' => 'Không thể lưu dữ liệu',
+                'type' => 'error'
+            ];
+        } else {
+            $noti = [
+                'message' => 'Lưu dữ liệu thành công',
+                'type' => 'success'
+            ];
+        }
+        return redirect()->back()->with($noti);
     }
 
     /**
@@ -68,9 +54,21 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update($id)
     {
-        //
+        $edit = $this->categoryService->updateCategory($id, $request->all());
+        if(!$edit){
+            $noti = [
+                'message' => 'Không thể lưu dữ liệu',
+                'type' => 'error'
+            ];
+        } else {
+            $noti = [
+                'message' => 'Cập nhật dữ liệu thành công',
+                'type' => 'success'
+            ];
+        }
+        return redirect()->back()->with($noti);
     }
 
     /**
@@ -79,8 +77,20 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $destroy = $this->categoryService->destroyCategory($id);
+        if(!$destroy){
+            $noti = [
+                'message' => 'Không thể lưu dữ liệu',
+                'type' => 'error'
+            ];
+        } else {
+            $noti = [
+                'message' => 'Xóa dữ liệu thành công',
+                'type' => 'success'
+            ];
+        }
+        return redirect()->back()->with($noti);
     }
 }
