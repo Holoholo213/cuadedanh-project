@@ -12,19 +12,25 @@ class DashboardController extends Controller
     }
 
     public function index(){
-        $posts = $this->postService->getAllPost();
-        return view("manager.dashboard", compact("posts"));
+        $posts = $this->postService->getAllPost()->map->dashboardFormat();
+        $favorites = $this->postService->getAllPost()->where('favorite', '1')->map->dashboardFormat();
+        $hiddens = $this->postService->getAllPost()->where("publish", "0")->map->dashboardFormat();
+        $publishes = $this->postService->getAllPost()->where("publish", "1")->map->dashboardFormat();
+        return view("manager.dashboard", compact("posts", "favorites", "hiddens", "publishes"));
     }
 
     public function publish(){
-        return view("manager.post.publish");
+        $posts = $this->postService->getAllPost()->where("publish", "1");
+        return view("manager.post.publish", compact("posts"));
     }
 
     public function hiding(){
-        return view("manager.post.hiding");
+        $posts = $this->postService->getAllPost()->where("publish", "0");
+        return view("manager.post.hiding", compact("posts"));
     }
 
     public function favorite(){
-        return view("manager.post.favorite");
+        $posts = $this->postService->getAllPost()->where("favorite", "1");
+        return view("manager.post.favorite", compact("posts"));
     }
 }

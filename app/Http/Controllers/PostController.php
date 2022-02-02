@@ -24,8 +24,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
-        return view("manager.post.index");
+        $posts = $this->postService->getAllPost();
+        return view("manager.post.index", compact("posts"));
     }
 
     /**
@@ -47,7 +47,17 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $posts = $this->postService->createPost($request->all());
+        $validate = $request->validate([
+            "title" => "required",
+            "category_id" => "required",
+            "publish" => "nullable",
+            "favorite" => "nullable",
+            "description" => "required",
+            "thumb_img" => "image|mimes:jpeg,png,jpg,gif,svg|max:1024",
+            "published_at" => "nullable",
+            "content" => "nullable",
+        ]);
+        $posts = $this->postService->createPost($validate);
         if($posts){
             return redirect()->route("dashboard");
         } else {
@@ -61,9 +71,10 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($postId)
     {
-        //
+        $post = $this->postService->getById($postId)->format();
+        return view("manager.post.detail", compact("post"));
     }
 
     /**

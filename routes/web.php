@@ -46,6 +46,7 @@ Route::prefix('/media')->group(function () {
 });
 Route::prefix('/post')->group(function () {
     Route::get('/', [PostController::class, "index"])->name("post.index");
+    Route::get('/detail/{id}', [PostController::class, "show"])->name("post.detail");
     Route::get('/create', [PostController::class, "create"])->name("post.create");
     Route::post('/store', [PostController::class, "store"])->name("post.store");
 });

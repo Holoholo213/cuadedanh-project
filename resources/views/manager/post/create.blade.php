@@ -1,11 +1,12 @@
 @php
 $page='create';
+$active='create';
 $title='Tạo bài viết';
 $sub='Tạo bài viết';
 @endphp
 @extends('layouts/manager/layouts')
 @section('content')
-<form action={{ route("post.store") }} method="POST">
+<form action={{ route("post.store") }} method="POST" enctype="multipart/form-data">
 	@csrf
 	<div class="card-body">
 		<div class="row">
@@ -51,11 +52,7 @@ $sub='Tạo bài viết';
 					<label for="thumb_img">Thumb Image</label>
 					<div class="input-group">
 						<div class="custom-file">
-							<input type="file" class="custom-file-input" id="thumb_img" name="thumb_img">
-							<label class="custom-file-label" for="thumb_img">Chọn ảnh</label>
-						</div>
-						<div class="input-group-append">
-							<span class="input-group-text">Tải</span>
+							<input type="file" id="thumb_img" name="thumb_img">
 						</div>
 					</div>
 				</div>

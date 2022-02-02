@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Helpers\SlugHelper;
+use App\Models\Post;
 
 class PlaygroundController extends Controller
 {
@@ -13,8 +14,7 @@ class PlaygroundController extends Controller
         $this->slugHelper = $slugHelper;
     }
     public function index(){
-        $name = "Quang Phạm";
-        $slug = $this->slugHelper->slugName($name);
-        dd($slug);
+        $post = Post::find(2)->format();
+        dd($post);
     }
 }

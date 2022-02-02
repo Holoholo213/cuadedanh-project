@@ -12,6 +12,7 @@
     <link rel="stylesheet" href={{ asset('manager/plugins/fontawesome-free/css/all.min.css') }}>
     <!-- Theme style -->
     <link rel="stylesheet" href={{ asset("manager/css/adminlte.min.css") }}>
+    <link rel="stylesheet" href={{ asset("common/style.css") }}>
     <!-- summernote -->
     <link rel="stylesheet" href={{ asset("manager/plugins/summernote/summernote-bs4.min.css") }}>
 </head>

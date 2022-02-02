@@ -29,4 +29,30 @@ class Post extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function format(){
+        return[
+            "title" => $this->title,
+            "category" => $this->category->name,
+            "description" => $this->description,
+            "thumb_img" => $this->thumb_img,
+            "content" => $this->content,
+            "publish" => $this->publish,
+            "favorite" => $this->favorite,
+            "published_at" => $this->published_at,
+            "created_at" => $this->created_at,
+            "updated_at" => $this->updated_at
+        ];
+    }
+
+    public function dashboardFormat(){
+        return [
+            "id" => $this->id,
+            "title" => $this->title,
+        ];
+    }
+
+    public function category(){
+        return $this->hasOne(Category::class, 'id', 'category_id');
+    }
 }
