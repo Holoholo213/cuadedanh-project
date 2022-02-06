@@ -1,13 +1,13 @@
 @php
 $page='Chi tiết';
-$title=$post["title"];
+$title=$post->title;
 $sub='Detail';
 @endphp
 @extends('layouts/manager/layouts')
 @section('content')
 <div class="card">
 	<div class="card-header">
-		<h3 class="card-title">{{ $post["title"] }}</h3>
+		<h3 class="card-title">{{ $post->title }}</h3>
 
 		<div class="card-tools">
 			<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -28,27 +28,54 @@ $sub='Detail';
 								<div class="info-box bg-light">
 									<div class="info-box-content">
 										<span class="info-box-text text-center text-muted">Danh mục</span>
-										<span class="info-box-number text-center text-muted mb-0">{{ $post["category"] }}</span>
+										<span class="info-box-number text-center text-muted mb-0">{{ $post->category->name }}</span>
 									</div>
 								</div>
 							</div>
-							<div class="col-12 col-sm-9">
+							<div class="col-12 col-sm-3">
+								<div class="info-box bg-light">
+									<div class="info-box-content">
+										<span class="info-box-text text-center text-muted">Tags</span>
+										@if (count($post->tags) > 0)
+										@foreach ($post->tags as $item)
+										<span class="info-box-number text-center text-muted mb-0">{{ $item->name }}</span>
+										@endforeach
+										@else
+										<span class="info-box-number text-center text-muted mb-0">#</span>
+										@endif
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-sm-6">
 								<div class="info-box bg-light">
 									<div class="info-box-content">
 										<span class="info-box-text text-center text-muted">Miêu tả</span>
-										<span class="info-box-number text-center text-muted mb-0">{{ $post["description"] }}</span>
+										<span class="info-box-number text-center text-muted mb-0">{{ $post->description }}</span>
 									</div>
 								</div>
 							</div>
 						</div>
 
 						<div class="content">
-							{!! $post["content"] !!}
+							{!! $post->content !!}
+						</div>
+
+						<div class="row">
+							@foreach ($post->subContent as $item)
+							<div class="col-12 col-sm-4">
+								<img src={{ asset($item->image_dir) }} alt={{ $item->description }}>
+								{{ $item->description }}
+							</div>
+							@endforeach
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="thumbnail">
-							<img src={{ asset($post["thumb_img"]) }} alt="">
+							@isset($post->thumb_img)
+							<img src={{ asset($post->thumb_img) }} alt="">
+							@else
+							Không có ảnh thumb
+							@endisset
 						</div>
 					</div>
 				</div>
@@ -65,7 +92,7 @@ $sub='Detail';
 						</div>
 						<div class="col-sm-6">
 							<p class="text-sm">Ngày công khai
-								<b class="d-block">{{ date("d-m-Y", strtotime($post["published_at"])) }}</b>
+								<b class="d-block">{{ date("d-m-Y", strtotime($post->published_at)) }}</b>
 							</p>
 						</div>
 					</div>
@@ -73,12 +100,12 @@ $sub='Detail';
 					<div class="row">
 						<div class="col-sm-6">
 							<p class="text-sm">Ngày viết
-								<b class="d-block">{{ date("d-m-Y", strtotime($post["created_at"])) }}</b>
+								<b class="d-block">{{ date("d-m-Y", strtotime($post->created_at)) }}</b>
 							</p>
 						</div>
 						<div class="col-sm-6">
 							<p class="text-sm">Ngày chỉnh sửa
-								<b class="d-block">{{ date("d-m-Y", strtotime($post["updated_at"])) }}</b>
+								<b class="d-block">{{ date("d-m-Y", strtotime($post->updated_at)) }}</b>
 							</p>
 						</div>
 					</div>
@@ -88,12 +115,12 @@ $sub='Detail';
 				<div class="row">
 					<div class="col-sm-6">
 						<p class="text-sm">Trạng thái
-							<b class="d-block">{{ ($post["publish"] == "0") ? "Riêng tư" : "Công khai" }}</b>
+							<b class="d-block">{{ ($post->publish == "0") ? "Riêng tư" : "Công khai" }}</b>
 						</p>
 					</div>
 					<div class="col-sm-6">
 						<p class="text-sm">Yêu thích
-							<b class="d-block">{{ ($post["favorite"] == "0") ? "Không" : "Yêu thích" }}</b>
+							<b class="d-block">{{ ($post->favorite == "0") ? "Không" : "Yêu thích" }}</b>
 						</p>
 					</div>
 				</div>

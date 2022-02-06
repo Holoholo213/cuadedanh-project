@@ -23,7 +23,7 @@ class CreatePostsTable extends Migration
             $table->text("content")->nullable();
             $table->boolean("publish")->default(false);
             $table->boolean("favorite")->default(false);
-            $table->timestamp("published_at");
+            $table->timestamp("published_at")->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

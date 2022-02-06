@@ -1,14 +1,16 @@
 @php
-$page='page_manager';
-$active='publish';
-$title='Các trang đã công khai';
-$sub='publish';
+$page='Chi tiết danh mục';
+$active="category";
+$page="setting";
+$sub = $category->name;
+$detail="Category";
+$link='category.index';
 @endphp
 @extends('layouts/manager/layouts')
 @section('content')
 <div class="card">
 	<div class="card-header">
-		<h3 class="card-title">Bài viết</h3>
+		<h3 class="card-title">{{ $category->name }}</h3>
 
 		<div class="card-tools">
 			<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -23,27 +25,27 @@ $sub='publish';
 		<table class="table table-striped projects">
 			<thead>
 				<tr>
-					<th style="width: 1%">
+					<th style="width: 10px">
 						#
 					</th>
-					<th style="width: 15%">
+					<th style="width: 100px">
 						Tiêu đề
 					</th>
-					<th style="width: 45%">
+					<th>
 						Nội dung
 					</th>
-					<th>
-						Lượt xem
+					<th style="width: 50px">
+						View
 					</th>
-					<th style="width: 8%" class="text-center">
+					<th style="width: 40px" class="text-center">
 						Status
 					</th>
-					<th style="width: 20%">
+					<th style="width: 250px">
 					</th>
 				</tr>
 			</thead>
 			<tbody>
-				@foreach ($posts as $index => $item)
+				@foreach ($category->getPost as $index => $item)
 				<tr>
 					<td>
 						{{ $index+1 }}
@@ -54,14 +56,14 @@ $sub='publish';
 						</a>
 						<br>
 						<small>
-							{{ $item->created_at }}
+							{{ date("d-m-Y", strtotime($item->created_at)) }}
 						</small>
 					</td>
 					<td>
 						{!! Str::limit($item->content, 70) !!}
 					</td>
 					<td class="project_progress">
-
+						10
 					</td>
 					<td class="project-state">
 						@if ($item->publish == 0)
@@ -75,7 +77,7 @@ $sub='publish';
 						@endif
 					</td>
 					<td class="project-actions text-right">
-						<a class="btn btn-primary btn-sm" href={{ route("post.detail", ["id"=> $item->id]) }}>
+						<a class="btn btn-primary btn-sm" href={{ route("post.detail", ["id"=> $item->id, "slug" => $item->slug]) }}>
 							<i class="fas fa-folder">
 							</i>
 							View

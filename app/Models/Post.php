@@ -33,6 +33,7 @@ class Post extends Model
     public function format(){
         return[
             "title" => $this->title,
+            "tag" => $this->tags,
             "category" => $this->category->name,
             "description" => $this->description,
             "thumb_img" => $this->thumb_img,
@@ -40,6 +41,7 @@ class Post extends Model
             "publish" => $this->publish,
             "favorite" => $this->favorite,
             "published_at" => $this->published_at,
+            "subContent" => $this->subContent,
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at
         ];
@@ -54,5 +56,18 @@ class Post extends Model
 
     public function category(){
         return $this->hasOne(Category::class, 'id', 'category_id');
+    }
+
+    public function tags(){
+        return $this->belongsToMany(Tag::class, 'posts_tags');
+    }
+
+    public function subContent(){
+        return $this->hasMany(SubContent::class, 'post_id', 'id')->select("description", "image_dir");
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

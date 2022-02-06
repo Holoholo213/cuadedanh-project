@@ -18,6 +18,10 @@ class CategoryService {
 		return $this->categoryRepository->getAll();
 	}
 
+	public function getById($categoryId){
+		return $this->categoryRepository->getById($categoryId);
+	}
+
 	public function createCategory(array $data){
 		$slug = $this->slugHelper->slugName($data["name"]);
 		$fields = [

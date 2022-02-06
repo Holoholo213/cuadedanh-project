@@ -10,12 +10,14 @@ $title='Dashboard';
 <div class="content">
 	<div class="container-fluid">
 		<div class="row">
+			@foreach ($categories as $item)
+			@if (count($item->getPost) > 0)
 			<div class="col-12 col-sm-6">
 				<div class="card">
 					<div class="card-header">
 						<div class="d-flex justify-content-between align-items-center">
-							<h3 class="card-title">View cao</h3>
-							<a href={{ route("post.index") }}>Toàn bộ</a>
+							<h3 class="card-title">{{ $item->name }}</h3>
+							<a href={{ route("category.detail", ["id"=> $item->id, "slug" => $item->slug]) }}>Toàn bộ</a>
 						</div>
 					</div>
 					<!-- /.card-header -->
@@ -24,16 +26,26 @@ $title='Dashboard';
 							<thead>
 								<tr>
 									<th style="width: 10px">#</th>
-									<th>Task</th>
-									<th style="width: 40px">Label</th>
+									<th style="width: 150px;">Tiêu đề</th>
+									<th>Miêu tả</th>
+									<th style="width: 100px" class="text-center">Lượt xem</th>
+									<th style="width: 100px"></th>
 								</tr>
 							</thead>
 							<tbody>
-								@foreach ($posts as $index => $item)
+								@foreach ($item->getPost as $index => $post)
 								<tr>
 									<td>{{ $index + 1 }}</td>
-									<td>{{ $item["title"] }}</td>
-									<td><span class="badge bg-danger">55%</span></td>
+									<td>{{ $post->title }}</td>
+									<td>{{ $post->description }}</td>
+									<td class="text-center"><span class="badge bg-danger">55%</span></td>
+									<td>
+										<a class="btn btn-primary btn-sm" href={{ route("post.detail", ["id"=> $item->id, "slug" => $item->slug]) }}>
+											<i class="fas fa-eye">
+											</i>
+											Xem
+										</a>
+									</td>
 								</tr>
 								@endforeach
 							</tbody>
@@ -42,106 +54,8 @@ $title='Dashboard';
 					<!-- /.card-body -->
 				</div>
 			</div>
-
-			<div class="col-12 col-sm-6">
-				<div class="card">
-					<div class="card-header">
-						<div class="d-flex justify-content-between align-items-center">
-							<h3 class="card-title">Yêu thích</h3>
-							<a href={{ route('post.favorite') }}>Toàn bộ</a>
-						</div>
-					</div>
-					<!-- /.card-header -->
-					<div class="card-body p-0">
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th style="width: 10px">#</th>
-									<th>Task</th>
-									<th style="width: 40px">Label</th>
-								</tr>
-							</thead>
-							<tbody>
-								@foreach ($favorites as $index => $item)
-								<tr>
-									<td>{{ $index + 1 }}</td>
-									<td>{{ $item["title"] }}</td>
-									<td><span class="badge bg-danger">55%</span></td>
-								</tr>
-								@endforeach
-							</tbody>
-						</table>
-					</div>
-					<!-- /.card-body -->
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-12 col-sm-6">
-				<div class="card">
-					<div class="card-header">
-						<div class="d-flex justify-content-between align-items-center">
-							<h3 class="card-title">Riêng tư</h3>
-							<a href={{ route("post.hiding") }}>Toàn bộ</a>
-						</div>
-					</div>
-					<!-- /.card-header -->
-					<div class="card-body p-0">
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th style="width: 10px">#</th>
-									<th>Task</th>
-									<th style="width: 40px">Label</th>
-								</tr>
-							</thead>
-							<tbody>
-								@foreach ($hiddens as $index => $item)
-								<tr>
-									<td>{{ $index + 1 }}</td>
-									<td>{{ $item["title"] }}</td>
-									<td><span class="badge bg-danger">55%</span></td>
-								</tr>
-								@endforeach
-							</tbody>
-						</table>
-					</div>
-					<!-- /.card-body -->
-				</div>
-			</div>
-
-			<div class="col-12 col-sm-6">
-				<div class="card">
-					<div class="card-header">
-						<div class="d-flex justify-content-between align-items-center">
-							<h3 class="card-title">Công khai</h3>
-							<a href={{ route("post.publish") }}>Toàn bộ</a>
-						</div>
-					</div>
-					<!-- /.card-header -->
-					<div class="card-body p-0">
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th style="width: 10px">#</th>
-									<th>Task</th>
-									<th style="width: 40px">Label</th>
-								</tr>
-							</thead>
-							<tbody>
-								@foreach ($publishes as $index => $item)
-								<tr>
-									<td>{{ $index + 1 }}</td>
-									<td>{{ $item["title"] }}</td>
-									<td><span class="badge bg-danger">55%</span></td>
-								</tr>
-								@endforeach
-							</tbody>
-						</table>
-					</div>
-					<!-- /.card-body -->
-				</div>
-			</div>
+			@endif
+			@endforeach
 		</div>
 		<!-- /.card -->
 	</div><!-- /.container-fluid -->

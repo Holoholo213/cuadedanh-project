@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
 use App\Services\CategoryService;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -24,13 +25,18 @@ class CategoryController extends Controller
         return view("manager.category.index", compact("categories"));
     }
 
+    public function show($id, $slug){
+        $category = $this->categoryService->getById($id);
+        return view("manager.category.detail", compact("category"));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreCategoryRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(Request $request)
     {
         $store = $this->categoryService->createCategory($request->all());
         if(!$store){
@@ -54,7 +60,7 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update($id, Request $request)
     {
         $edit = $this->categoryService->updateCategory($id, $request->all());
         if(!$edit){

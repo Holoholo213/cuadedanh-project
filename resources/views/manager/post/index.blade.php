@@ -8,6 +8,39 @@ $sub='posts';
 @section('content')
 <div class="card">
 	<div class="card-header">
+		<div class="d-flex align-items-center">
+			<div class="card-title mr-4">Tìm kiếm</div>
+			<div>
+				<form action={{ route("post.index") }} method="GET">
+					<div class="d-flex justify-content-between align-items-center">
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="form-group mb-0 mr-3">
+								<input type="text" class="form-control" id="search" name="title" placeholder="Tiêu đề">
+							</div>
+							<div class="custom-control custom-checkbox mr-3">
+								<input class="custom-control-input checkboxCheck" type="checkbox" id="publish" value="1">
+								<label for="publish" class="custom-control-label">Công khai</label>
+							</div>
+							<div class="custom-control custom-checkbox mr-3">
+								<input class="custom-control-input custom-control-input-danger checkboxCheck" type="checkbox" id="not_publish" value="0">
+								<label for="not_publish" class="custom-control-label">Riêng tư</label>
+							</div>
+							<div class="form-group mb-0 mr-3">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="favorite" value="true" name="favorite">
+									<label class="custom-control-label" for="favorite">Yêu thích</label>
+								</div>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary btn-sm">Tìm kiếm</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="card">
+	<div class="card-header">
 		<h3 class="card-title">Bài viết</h3>
 
 		<div class="card-tools">
@@ -23,22 +56,23 @@ $sub='posts';
 		<table class="table table-striped projects">
 			<thead>
 				<tr>
-					<th style="width: 1%">
+					<th style="width: 10px">
 						#
 					</th>
-					<th style="width: 15%">
+					<th style="width: 100px">
 						Tiêu đề
 					</th>
-					<th style="width: 45%">
+					<th>
 						Nội dung
 					</th>
-					<th>
-						Lượt xem
+					<th style="width: 50px">
+						View
 					</th>
-					<th style="width: 8%" class="text-center">
+					<th style="width: 40px" class="text-center">
 						Status
 					</th>
-					<th style="width: 20%">
+					<th style="width: 250px" class="text-center">
+						Setting
 					</th>
 				</tr>
 			</thead>
@@ -61,7 +95,7 @@ $sub='posts';
 						{!! Str::limit($item->content, 70) !!}
 					</td>
 					<td class="project_progress">
-
+						10
 					</td>
 					<td class="project-state">
 						@if ($item->publish == 0)
@@ -75,8 +109,8 @@ $sub='posts';
 						@endif
 					</td>
 					<td class="project-actions text-right">
-						<a class="btn btn-primary btn-sm" href={{ route("post.detail", ["id"=> $item->id]) }}>
-							<i class="fas fa-folder">
+						<a class="btn btn-primary btn-sm" href={{ route("post.detail", ["id"=> $item->id, "slug" => $item->slug]) }}>
+							<i class="fas fa-eye">
 							</i>
 							View
 						</a>
@@ -97,4 +131,16 @@ $sub='posts';
 		</table>
 	</div>
 </div>
+@endsection
+
+@section('script')
+<script>
+	$(".checkboxCheck").click(function(){
+		var value = $(this).val()
+		if($(this).is(":checked")){
+			$(".checkboxCheck").prop("checked", false);
+			$(this).prop("checked", true);
+		}
+	})
+</script>
 @endsection

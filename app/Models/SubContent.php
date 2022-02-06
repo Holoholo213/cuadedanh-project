@@ -10,4 +10,17 @@ class SubContent extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    protected $fillable = [
+        'post_id',
+        'description',
+        'image_dir',
+    ];
+
+    protected $hidden = [
+        'id',
+        'deleted_at',
+        'created_at',
+        'updated_at'
+    ];
 }

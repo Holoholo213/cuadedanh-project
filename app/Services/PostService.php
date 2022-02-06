@@ -4,6 +4,9 @@ namespace App\Services;
 use App\Repositories\PostRepository;
 use App\Helpers\SlugHelper;
 use App\Helpers\ImageHelper;
+use App\Models\Post;
+use App\QueryFilter\Title;
+use Illuminate\Pipeline\Pipeline;
 
 class PostService {
 
@@ -18,7 +21,9 @@ class PostService {
 	}
 
 	public function getAllPost(){
-		return $this->postRepository->getAll();
+		$posts = $this->postRepository->getAll();
+		$posts = $this->filters();
+		return $posts;
 	}
 
 	public function getById($postId){
@@ -53,6 +58,7 @@ class PostService {
 			$fileName = $this->imageHelper->storeImage($data["thumb_img"], "posts/image");
 			$fields["thumb_img"] = $fileName;
 		}
+
 		return $this->postRepository->create($fields);
 	}
 
@@ -67,5 +73,9 @@ class PostService {
 
 	public function destroyPost($postId){
 		return $this->postRepository->destroy($postId);
+	}
+
+	public static function filters(){
+		return app(Pipeline::class)->send(Post::query())->through([Title::class])->thenReturn()->get();
 	}
 }

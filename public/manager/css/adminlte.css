@@ -14800,6 +14800,10 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
     padding: 0;
 }
 
+.nav-sidebar .nav-treeview .nav-item .nav-link {
+    padding: 0.5rem 2rem;
+}
+
 .nav-sidebar .nav-treeview>.nav-item>.nav-link>.nav-icon {
     width: 1.6rem;
 }

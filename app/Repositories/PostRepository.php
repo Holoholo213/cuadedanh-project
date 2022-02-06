@@ -7,7 +7,7 @@ use App\Models\Post;
 class PostRepository implements RepositoryInterface{
 	public function getAll()
 	{
-		return Post::all();
+		return Post::orderBy('created_at', 'DESC');
 	}
 
 	public function getById($postId)

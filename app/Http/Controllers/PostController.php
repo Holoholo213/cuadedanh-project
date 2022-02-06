@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\CategoryService;
 use App\Services\PostService;
+use App\Services\SubContentService;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -11,10 +12,12 @@ class PostController extends Controller
 {
     private $categoryService;
     private $postService;
-    public function __construct(CategoryService $categoryService, PostService $postService)
+    private $subContentService;
+    public function __construct(CategoryService $categoryService, PostService $postService, SubContentService $subContentService)
     {
         $this->categoryService = $categoryService;
         $this->postService = $postService;
+        $this->subContentService = $subContentService;
     }
 
     /**
@@ -22,7 +25,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $posts = $this->postService->getAllPost();
         return view("manager.post.index", compact("posts"));
@@ -56,8 +59,17 @@ class PostController extends Controller
             "thumb_img" => "image|mimes:jpeg,png,jpg,gif,svg|max:1024",
             "published_at" => "nullable",
             "content" => "nullable",
+            "sub_thumb" => "nullable",
+            "sub_description" => "nullable"
         ]);
         $posts = $this->postService->createPost($validate);
+        if(isset($request->sub_thumb)){
+            $subFields = [
+                'description' => $request->sub_description,
+                'img' => $request->sub_thumb
+            ];
+            $this->subContentService->create($posts->id, $subFields);
+        }
         if($posts){
             return redirect()->route("dashboard");
         } else {
@@ -73,7 +85,7 @@ class PostController extends Controller
      */
     public function show($postId)
     {
-        $post = $this->postService->getById($postId)->format();
+        $post = $this->postService->getById($postId);
         return view("manager.post.detail", compact("post"));
     }
 

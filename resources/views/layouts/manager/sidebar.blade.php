@@ -41,14 +41,6 @@
 					</a>
 				</li>
 				<li class="nav-item">
-					<a href={{ route('post.create') }} class="nav-link {{ isset($active) && $active === 'create' ? 'active' : '' }}">
-						<i class="nav-icon fas fa-edit"></i>
-						<p>
-							Tạo bài viết mới
-						</p>
-					</a>
-				</li>
-				<li class="nav-item">
 					<a href="#" class="nav-link {{ $page && $page === 'page_manager' ? 'active' : '' }}">
 						<i class=" nav-icon fas fa-copy"></i>
 						<p>
@@ -59,26 +51,14 @@
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
 							<a href={{ route('post.index') }} class="nav-link {{ isset($active) && $active === 'post' ? 'active' : '' }}">
-								<i class="far fa-circle nav-icon"></i>
+								<i class="fas fa-list nav-icon"></i>
 								<p>Toàn bộ bài viết</p>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href={{ route('post.publish') }} class="nav-link {{ isset($active) && $active === 'publish' ? 'active' : '' }}">
-								<i class="far fa-circle nav-icon"></i>
-								<p>Bài đã công khai</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href={{ route('post.hiding') }} class="nav-link {{ isset($active) && $active === 'hiding' ? 'active' : '' }}">
-								<i class="far fa-circle nav-icon"></i>
-								<p>Bài chưa công khai</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href={{ route('post.favorite') }} class="nav-link {{ isset($active) && $active === 'favorite' ? 'active' : '' }}">
-								<i class="far fa-circle nav-icon"></i>
-								<p>Bài yêu thích</p>
+							<a href={{ route('post.create') }} class="nav-link {{ isset($active) && $active === 'create' ? 'active' : '' }}">
+								<i class="nav-icon fas fa-edit"></i>
+								<p>Viết bài</p>
 							</a>
 						</li>
 					</ul>

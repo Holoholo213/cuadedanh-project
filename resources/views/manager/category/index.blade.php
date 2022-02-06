@@ -27,8 +27,9 @@ $sub='Danh mục';
 										<th>Tên</th>
 										<th>slug</th>
 										<th style="width: 100px" class="text-center">Trang</th>
-										<th style="width: 50px;">Sửa</th>
-										<th style="width: 50px;">Xóa</th>
+										<th style="width: 65px;" class="text-center">Chi tiết</th>
+										<th style="width: 40px;" class="text-center">Sửa</th>
+										<th style="width: 40px;" class="text-center">Xóa</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -39,7 +40,12 @@ $sub='Danh mục';
 										<td>
 											{{ $item->slug }}
 										</td>
-										<td class="text-center"><span class="badge bg-danger">1</span></td>
+										<td class="text-center"><span class="badge bg-danger">{{ count($item->getPost) }}</span></td>
+										<td class="text-center">
+											<a href={{ route("category.detail", ["id"=> $item->id, "slug" => $item->slug]) }}>
+												<i class="fas fa-hand-point-right"></i>
+											</a>
+										</td>
 										<td class="text-center">
 											<button class="btn btn-sm" onclick="getId({{ $item->id }})" type='button' data-toggle="modal" data-target="#modal-default">
 												<i class="fas fa-pen-square"></i>
@@ -49,9 +55,15 @@ $sub='Danh mục';
 											<form action="{{ route('category.destroy', $item->id) }}" method="POST">
 												@csrf
 												@method('delete')
+												@if (count($item->getPost) > 0)
+												<button type="submit" class="btn btn-sm disabled" disabled>
+													<i class="fas fa-trash-alt"></i>
+												</button>
+												@else
 												<button type="submit" class="btn btn-sm">
 													<i class="fas fa-trash-alt"></i>
 												</button>
+												@endif
 											</form>
 										</td>
 									</tr>
@@ -90,6 +102,7 @@ $sub='Danh mục';
 							</div>
 							<form id="edit_form" method="POST">
 								@csrf
+								@method("PUT")
 								<div class="modal-body">
 									@csrf
 									<div class="form-group">
