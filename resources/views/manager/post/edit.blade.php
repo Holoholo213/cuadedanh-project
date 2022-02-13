@@ -5,7 +5,7 @@
 @endphp
 @extends('layouts/manager/layouts')
 @section('content')
-<form action={{ route("post.update") }} method="POST" enctype="multipart/form-data">
+<form action={{ route("post.update", ["id" => $post->id]) }} method="POST" enctype="multipart/form-data">
     @csrf
     <div class="card-body">
         <div class="row">

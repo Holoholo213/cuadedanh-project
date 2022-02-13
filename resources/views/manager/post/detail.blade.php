@@ -58,25 +58,23 @@
                                         @endforeach
                                     </span>
                                 @else
-                                    <span class="info-box-number text-center text-muted mb-0">Không có tag, <a href="#">Thêm tag ?</a></span>
+                                    <span class="info-box-number text-center text-muted mb-0">Không có tag</span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="info-box bg-light">
-                            <div class="info-box-content">
-                                <span class="info-box-text text-center text-muted">Nguyên liệu</span>
-                                @if(count($post->ingredients) > 0)
+                        @if(count($post->ingredients) > 0)
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Nguyên liệu</span>
                                     <span class="info-box-number text-muted mb-0">
                                         @foreach($post->ingredients as $item)
                                             {{ $item->name }},
                                         @endforeach
                                     </span>
-                                @else
-                                    <span class="info-box-number text-center text-muted mb-0">Không có nguyên liệu, thêm nguyên liệu ?</span>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
 
                 </div>

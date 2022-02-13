@@ -8,6 +8,7 @@ use App\Services\SubContentService;
 use App\Services\TagService;
 use App\Services\IngredientService;
 use App\Models\Post;
+use Awssat\Visits\DataEngines\RedisEngine;
 use DOMDocument;
 use Illuminate\Http\Request;
 
@@ -125,7 +126,7 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update($postId, Request $request)
+    public function update($id, Request $request)
     {
         $validate = $request->validate([
             "title" => "required",
@@ -137,7 +138,13 @@ class PostController extends Controller
             "published_at" => "nullable",
             "content" => "nullable",
         ]);
-        $post = $this->postService->updatePost($postId, $validate);
+        try {
+            $post = $this->postService->updatePost($id, $validate);
+            
+            return redirect()->route("post.detail", ["id" => $id, "slug" => $post]);
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
 
     /**
@@ -146,8 +153,13 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        try {
+            $this->postService->destroyPost($id);
+            return redirect()->route("post.index");
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
 }

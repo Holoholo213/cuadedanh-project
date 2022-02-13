@@ -100,8 +100,8 @@ class PostService {
 			$fileName = $this->imageHelper->storeImage($data["thumb_img"], "posts/thumb");
 			$fields["thumb_img"] = $fileName;
 		}
-
-		return $this->postRepository->update($postId, $fields);
+		$update = $this->postRepository->update($postId, $fields);
+		return $slug;
 	}
 
 	public function destroyPost($postId){
@@ -114,7 +114,7 @@ class PostService {
 
 	private static function imageHandle($data){
 		$dom = new DOMDocument();
-		$dom->loadHtml(mb_convert_encoding($data, 'HTML-ENTITIES', "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		@$dom->loadHtml(mb_convert_encoding($data, 'HTML-ENTITIES', "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $imageFile = $dom->getElementsByTagName('img');
 		foreach($imageFile as $item => $img){
             $src = $img->getAttribute('src');
