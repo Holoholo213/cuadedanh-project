@@ -81,6 +81,7 @@ img {
     top: 0;
     left: 0;
     opacity: 0;
+    z-index: -1;
 }
 
 #tags .tagContent {
@@ -94,4 +95,13 @@ img {
 
 #tags .tagContent:hover {
     color: #dc3545;
+}
+
+.img-content{
+    max-width: 450px;
+    margin: 0 auto 30px;
+}
+
+.sub-content{
+    margin-bottom: 30px;
 }

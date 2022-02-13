@@ -15,13 +15,15 @@ class SubContentService{
 	}
 
 	public function create($id, $data) {
-		foreach($data['img'] as $key => $item) {
-			$fileName = $this->imageHelper->storeImage($item, "posts/image");
+		foreach($data["content"] as $key => $item) {
 			$fileds = [
 				'post_id' => $id,
 				'description' => $data["description"][$key],
-				'image_dir' => $fileName
 			];
+			if(isset($data["img"][$key])){
+				$fileName = $this->imageHelper->storeImage($data["img"][$key], "posts/image");
+				$fileds["image_dir"] = $fileName;
+			}
 			$this->subContentRepository->create($fileds);
 		}
 	}

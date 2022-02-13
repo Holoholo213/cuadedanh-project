@@ -1,42 +1,45 @@
 <?php
 
 namespace App\Services;
-use App\Repositories\TagRepository;
 use App\Helpers\SlugHelper;
+use App\Models\Tag;
 
 class TagService {
 
-	private $tagRepository;
 	private $slugHelper;
-	public function __construct(TagRepository $tagRepository, SlugHelper $slugHelper)
+	public function __construct(SlugHelper $slugHelper)
 	{
-		$this->tagRepository = $tagRepository;
 		$this->slugHelper = $slugHelper;
 	}
 
 	public function getAllTag(){
-		return $this->tagRepository->getAll();
+		return Tag::all();
 	}
 
-	public function createTag(array $data){
-		$slug = $this->slugHelper->slugName($data["name"]);
-		$fields = [
-			"name" => $data["name"],
-			"slug" => $slug
-		];
-		return $this->tagRepository->create($fields);
+	public function tagHandling($data){
+		$tagIdArray = [];
+		foreach($data as $item){
+			$tagSlug = $this->slugHelper->slugName($item);
+			$tagExist = $this->checkTagExist($tagSlug);
+			if($tagExist){
+				array_push($tagIdArray, $tagExist->id);
+			} else {
+				$fields = [
+					'name' => $item,
+					'slug' => $tagSlug
+				];
+				$newTag = $this->createTag($fields);
+				array_push($tagIdArray, $newTag->id);
+			}
+		}
+		return $tagIdArray;
+	}
+	
+	private function checkTagExist($slug){
+		return Tag::where('slug', $slug)->first();
 	}
 
-	public function updateTag($tagId, array $data){
-		$slug = $this->slugHelper->slugName($data["name"]);
-		$fields = [
-			"name" => $data["name"],
-			"slug" => $slug
-		];
-		return $this->tagRepository->update($tagId, $data);
-	}
-
-	public function destroyTag($tagId){
-		return $this->tagRepository->destroy($tagId);
+	private function createTag($fields){
+		return Tag::create($fields);
 	}
 }

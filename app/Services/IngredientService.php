@@ -1,42 +1,45 @@
 <?php
 
 namespace App\Services;
-use App\Repositories\IngredientRepository;
 use App\Helpers\SlugHelper;
+use App\Models\Ingredient;
 
 class IngredientService {
 
-	private $ingredientRepository;
 	private $slugHelper;
-	public function __construct(IngredientRepository $ingredientRepository, SlugHelper $slugHelper)
+	public function __construct(SlugHelper $slugHelper)
 	{
-		$this->ingredientRepository = $ingredientRepository;
 		$this->slugHelper = $slugHelper;
 	}
 
 	public function getAllIngredient(){
-		return $this->ingredientRepository->getAll();
+		return Ingredient::all();
+	}
+	
+	public function ingredientHandling($data){
+		$ingredientArrayId = [];
+		foreach($data as $item){
+			$ingredientSlug = $this->slugHelper->slugName($item);
+			$ingredientExist = $this->checkIngredientExist($ingredientSlug);
+			if($ingredientExist){
+				array_push($ingredientArrayId, $ingredientExist->id);
+			} else {
+				$fields = [
+					'name' => $item,
+					'slug' => $ingredientSlug
+				];
+				$newIngredient = $this->createTag($fields);
+				array_push($ingredientArrayId, $newIngredient->id);
+			}
+		}
+		return $ingredientArrayId;
+	}
+	
+	private function checkIngredientExist($slug){
+		return Ingredient::where('slug', $slug)->first();
 	}
 
-	public function createTag(array $data){
-		$slug = $this->slugHelper->slugName($data["name"]);
-		$fields = [
-			"name" => $data["name"],
-			"slug" => $slug
-		];
-		return $this->ingredientRepository->create($fields);
-	}
-
-	public function updateTag($tagId, array $data){
-		$slug = $this->slugHelper->slugName($data["name"]);
-		$fields = [
-			"name" => $data["name"],
-			"slug" => $slug
-		];
-		return $this->ingredientRepository->update($tagId, $fields);
-	}
-
-	public function destroyTag($tagId){
-		return $this->ingredientRepository->destroy($tagId);
+	private function createTag($fields){
+		return Ingredient::create($fields);
 	}
 }

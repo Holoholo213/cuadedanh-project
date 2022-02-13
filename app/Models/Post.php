@@ -17,8 +17,8 @@ class Post extends Model
         'category_id',
         'description',
         'thumb_img',
-        'content',
         'publish',
+        'content',
         'favorite',
         'published_at'
     ];
@@ -37,7 +37,6 @@ class Post extends Model
             "category" => $this->category->name,
             "description" => $this->description,
             "thumb_img" => $this->thumb_img,
-            "content" => $this->content,
             "publish" => $this->publish,
             "favorite" => $this->favorite,
             "published_at" => $this->published_at,
@@ -64,6 +63,10 @@ class Post extends Model
 
     public function subContent(){
         return $this->hasMany(SubContent::class, 'post_id', 'id')->select("description", "image_dir");
+    }
+
+    public function ingredients(){
+        return $this->belongsToMany(Ingredient::class, "post_ingredient")->withPivot('values');
     }
 
     public function getRouteKeyName()

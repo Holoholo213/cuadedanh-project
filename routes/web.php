@@ -50,6 +50,8 @@ Route::prefix('/post')->group(function () {
     Route::get('/detail/{id}/{slug}', [PostController::class, "show"])->name("post.detail");
     Route::get('/create', [PostController::class, "create"])->name("post.create");
     Route::post('/store', [PostController::class, "store"])->name("post.store");
+    Route::get('/edit/{id}', [PostController::class, "edit"])->name("post.edit");
+    Route::post('/update/{postId}', [PostController::class, "update"])->name("post.update");
 });
 
 Route::get('/play', [PlaygroundController::class, 'index'])->name("play.index");

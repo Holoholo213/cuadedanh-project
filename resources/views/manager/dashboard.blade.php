@@ -40,7 +40,7 @@ $title='Dashboard';
 									<td>{{ $post->description }}</td>
 									<td class="text-center"><span class="badge bg-danger">55%</span></td>
 									<td>
-										<a class="btn btn-primary btn-sm" href={{ route("post.detail", ["id"=> $item->id, "slug" => $item->slug]) }}>
+										<a class="btn btn-primary btn-sm" href={{ route("post.detail", ["id"=> $post->id, "slug" => $post->slug]) }}>
 											<i class="fas fa-eye">
 											</i>
 											Xem

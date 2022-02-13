@@ -65,7 +65,7 @@
 				</li>
 				<li class="nav-item">
 					<a href="#" class="nav-link {{ $page && $page === 'setting' ? 'active' : '' }}">
-						<i class=" nav-icon fas fa-copy"></i>
+						<i class=" nav-icon fas fa-cogs"></i>
 						<p>
 							Cài đặt
 							<i class="fas fa-angle-left right"></i>
@@ -88,6 +88,12 @@
 							<a href={{ route('ingredients.index') }} class="nav-link {{ isset($active) && $active === 'ingredients' ? 'active' : '' }}">
 								<i class="nav-icon fas fa-hamburger"></i>
 								<p>Nguyên liệu</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<i class="nav-icon fas fa-trash-alt"></i>
+								<p>Thùng rác</p>
 							</a>
 						</li>
 					</ul>

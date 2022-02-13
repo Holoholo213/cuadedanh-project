@@ -6,7 +6,10 @@ use App\Helpers\SlugHelper;
 use App\Helpers\ImageHelper;
 use App\Models\Post;
 use App\QueryFilter\Title;
+use DOMDocument;
 use Illuminate\Pipeline\Pipeline;
+use Intervention\Image\ImageManagerStatic as Image;
+use PhpParser\Node\Stmt\TryCatch;
 
 class PostService {
 
@@ -31,7 +34,6 @@ class PostService {
 	}
 
 	public function createPost(array $data){
-		$slug = $this->slugHelper->slugName($data["title"]);
 
 		if(isset($data["publish"])){
 			$data["publish"] = "1";
@@ -43,19 +45,24 @@ class PostService {
 		} else {
 			$data["favorite"] = "0";
 		}
+
+		$slug = $this->slugHelper->slugName($data["title"]);
+
+		$content = $this->imageHandle($data["content"]);
+
 		$fields = [
 			"title" => $data["title"],
 			"slug" => $slug,
 			"category_id" => $data["category_id"],
 			"description" => $data["description"],
 			"published_at" => $data["published_at"],
-			"content" => $data["content"],
 			"publish" => $data["publish"],
+			"content" => $content,
 			"favorite" => $data["favorite"],
 		];
-		
+
 		if(isset($data["thumb_img"])){
-			$fileName = $this->imageHelper->storeImage($data["thumb_img"], "posts/image");
+			$fileName = $this->imageHelper->storeImage($data["thumb_img"], "posts/thumb");
 			$fields["thumb_img"] = $fileName;
 		}
 
@@ -63,12 +70,38 @@ class PostService {
 	}
 
 	public function updatePost($postId, array $data){
-		$slug = $this->slugHelper->slugName($data["name"]);
+		if(isset($data["publish"])){
+			$data["publish"] = "1";
+		} else {
+			$data["publish"] = "0";
+		}
+		if(isset($data["favorite"])){
+			$data["favorite"] = "1";
+		} else {
+			$data["favorite"] = "0";
+		}
+
+		$slug = $this->slugHelper->slugName($data["title"]);
+
+		$content = $this->imageHandle($data["content"]);
+
 		$fields = [
-			"name" => $data["name"],
-			"slug" => $slug
+			"title" => $data["title"],
+			"slug" => $slug,
+			"category_id" => $data["category_id"],
+			"description" => $data["description"],
+			"published_at" => $data["published_at"],
+			"publish" => $data["publish"],
+			"content" => $content,
+			"favorite" => $data["favorite"],
 		];
-		return $this->postRepository->update($postId, $data);
+
+		if(isset($data["thumb_img"])){
+			$fileName = $this->imageHelper->storeImage($data["thumb_img"], "posts/thumb");
+			$fields["thumb_img"] = $fileName;
+		}
+
+		return $this->postRepository->update($postId, $fields);
 	}
 
 	public function destroyPost($postId){
@@ -77,5 +110,30 @@ class PostService {
 
 	public static function filters(){
 		return app(Pipeline::class)->send(Post::query())->through([Title::class])->thenReturn()->get();
+	}
+
+	private static function imageHandle($data){
+		$dom = new DOMDocument();
+		$dom->loadHtml(mb_convert_encoding($data, 'HTML-ENTITIES', "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $imageFile = $dom->getElementsByTagName('img');
+		foreach($imageFile as $item => $img){
+            $src = $img->getAttribute('src');
+            if(preg_match("/data:image/", $src)){
+                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                $mimetype = $groups['mime'];
+                $filename = uniqid();
+				$filepath = "/posts/images/".$filename.".".$mimetype;
+				try {
+					$image = Image::make($src)->encode($mimetype, 100)->save(public_path($filepath));
+				} catch (\Throwable $th) {
+					dd($th);
+				}
+				
+				$new_src = asset($filepath);
+				$img->removeAttribute('src');
+				$img->setAttribute('src', $new_src);
+            }
+		}
+		return $dom->saveHTML();
 	}
 }
