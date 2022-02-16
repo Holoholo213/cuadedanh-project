@@ -36,6 +36,7 @@ Route::middleware(["auth"])->prefix("/manager")->group(function(){
     Route::controller(PostController::class)->prefix("/post")->group(function(){
         Route::get("/", "index")->name("post.index");
         Route::get("/create", "create")->name("post.create");
+        Route::get("/detail/{id}/{slug}", "show")->name("post.detail");
         Route::post("/store", "store")->name("post.store");
         Route::delete('/destroy/{id}', "destroy")->name("post.destroy");
     });
