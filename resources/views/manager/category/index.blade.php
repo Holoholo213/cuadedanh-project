@@ -138,8 +138,7 @@ $sub='Danh mục';
 		} else {
 			var cat_id = 1
 		}
-		edit_form.setAttribute('action', `{{ url('category/update/${id}') }}`)
+		edit_form.setAttribute('action', `{{ url('/manager/category/update/${id}') }}`)
     }
-
 </script>
 @endsection

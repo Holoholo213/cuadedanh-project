@@ -20,8 +20,8 @@ class CreatePostsTable extends Migration
             $table->string("slug");
             $table->string("description");
             $table->string("thumb_img")->nullable();
-            $table->boolean("publish")->default(false);
-            $table->boolean("favorite")->default(false);
+            $table->boolean("publish")->default(0);
+            $table->boolean("favorite")->default(0);
             $table->longText("content")->nullable();
             $table->timestamp("published_at")->nullable();
             $table->softDeletes();

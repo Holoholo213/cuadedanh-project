@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
 use App\Models\Tag;
 use App\Services\TagService;
+use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
@@ -31,7 +32,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -40,9 +41,14 @@ class TagController extends Controller
      * @param  \App\Http\Requests\StoreTagRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTagRequest $request)
+    public function store(Request $request)
     {
-        //
+        try {
+            $this->tagService->createTag($request->all());
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
 
     /**
@@ -74,9 +80,17 @@ class TagController extends Controller
      * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTagRequest $request, Tag $tag)
+    public function update(Request $request, $tagId)
     {
-        //
+        $validate = $request->validate([
+            "name" => "required",
+        ]);
+        try {
+            $this->tagService->updateTag($tagId, $validate);
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
 
     /**
@@ -85,8 +99,13 @@ class TagController extends Controller
      * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tag $tag)
-    {
-        //
+    public function destroy($tagId)
+    {   
+        try {
+            $this->tagService->destroyTag($tagId);
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
 }

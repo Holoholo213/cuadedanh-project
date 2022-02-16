@@ -68,8 +68,12 @@ class PostController extends Controller
             "published_at" => "nullable",
             "content" => "nullable",
         ]);
-	
-        $posts = $this->postService->createPost($validate);
+
+        // try {
+        //     $posts = $this->postService->createPost($validate);
+        // } catch (\Throwable $th) {
+        //     dd($th);
+        // }
 
         if(isset($request->tag)){
             $tagArrayId = $this->tagService->tagHandling($request->tag);

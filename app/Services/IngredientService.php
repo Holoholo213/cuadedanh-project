@@ -28,18 +28,37 @@ class IngredientService {
 					'name' => $item,
 					'slug' => $ingredientSlug
 				];
-				$newIngredient = $this->createTag($fields);
+				$newIngredient = $this->createIngredient($fields);
 				array_push($ingredientArrayId, $newIngredient->id);
 			}
 		}
 		return $ingredientArrayId;
+	}
+
+	public function createIngredient($fields){
+		$tagSlug = $this->slugHelper->slugName($fields["name"]);
+		$data = [
+			"name" => $fields["name"],
+			"slug" => $tagSlug
+		];
+		return Ingredient::create($data);
+	}
+
+	public function updateIngredient($ingredientId, $data){
+		$tagSlug = $this->slugHelper->slugName($data["name"]);
+		$fields = [
+			"name" => $data["name"],
+			"slug" => $tagSlug
+		];
+		return Ingredient::whereId($ingredientId)->update($fields);
+	}
+
+	public function destroyIngredient($ingredientId){
+		return Ingredient::destroy($ingredientId);
 	}
 	
 	private function checkIngredientExist($slug){
 		return Ingredient::where('slug', $slug)->first();
 	}
 
-	private function createTag($fields){
-		return Ingredient::create($fields);
-	}
 }

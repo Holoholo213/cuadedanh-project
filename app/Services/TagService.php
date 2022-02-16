@@ -39,7 +39,25 @@ class TagService {
 		return Tag::where('slug', $slug)->first();
 	}
 
-	private function createTag($fields){
-		return Tag::create($fields);
+	public function createTag($fields){
+		$tagSlug = $this->slugHelper->slugName($fields["name"]);
+		$data = [
+			"name" => $fields["name"],
+			"slug" => $tagSlug
+		];
+		return Tag::create($data);
+	}
+
+	public function updateTag($tagId, $data){
+		$tagSlug = $this->slugHelper->slugName($data["name"]);
+		$fields = [
+			"name" => $data["name"],
+			"slug" => $tagSlug
+		];
+		return Tag::whereId($tagId)->update($fields);
+	}
+
+	public function destroyTag($tagId){
+		return Tag::destroy($tagId);
 	}
 }

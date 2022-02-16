@@ -46,7 +46,7 @@ $sub='Tags';
 											</button>
 										</td>
 										<td>
-											<form action="{{ route('category.destroy', $item->id) }}" method="POST">
+											<form action="{{ route("tags.destroy", $item->id) }}" method="POST">
 												@csrf
 												@method('delete')
 												<button type="submit" class="btn btn-sm">
@@ -68,7 +68,7 @@ $sub='Tags';
 							<h4 class="card-title">Thêm tag</h4>
 						</div>
 						<div class="card-body">
-							<form action={{ route('category.store') }} method="POST">
+							<form action={{ route('tags.store') }} method="POST">
 								@csrf
 								<div class="form-group">
 									<input type="text" class="form-control form-control-border" id="name" placeholder="Tên tag" name="name">
@@ -90,6 +90,7 @@ $sub='Tags';
 							</div>
 							<form id="edit_form" method="POST">
 								@csrf
+								@method("PUT")
 								<div class="modal-body">
 									@csrf
 									<div class="form-group">
@@ -125,8 +126,7 @@ $sub='Tags';
 		} else {
 			var cat_id = 1
 		}
-
+		edit_form.setAttribute('action', `{{ url('/manager/tags/update/${id}') }}`)
     }
-
 </script>
 @endsection

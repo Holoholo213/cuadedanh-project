@@ -35,7 +35,8 @@
 								<div class="text-center text-muted mb-4">
 									<h3>Đăng nhập</h3>
 								</div>
-								<form role="form">
+								<form method="POST" action="{{ route('login') }}">
+									@csrf
 									<div class="form-group mb-3">
 										<div class="input-group input-group-alternative">
 											<div class="input-group-prepend">
@@ -43,7 +44,7 @@
 													<i class="fas fa-envelope-square"></i>
 												</span>
 											</div>
-											<input class="form-control" placeholder="Email" type="email">
+											<input class="form-control" placeholder="Email" type="email" name="email">
 										</div>
 									</div>
 									<div class="form-group">
@@ -51,11 +52,11 @@
 											<div class="input-group-prepend">
 												<span class="input-group-text"><i class="fas fa-key"></i></span>
 											</div>
-											<input class="form-control" placeholder="Password" type="password">
+											<input class="form-control" placeholder="Password" type="password" name="password">
 										</div>
 									</div>
 									<div class="text-center">
-										<button type="button" class="btn btn-primary my-4">Sign in</button>
+										<button type="button" class="btn btn-primary my-4">Đăng Nhập</button>
 									</div>
 								</form>
 							</div>
@@ -63,7 +64,7 @@
 						<div class="row mt-3">
 							<div class="col-6">
 								<a href="#" class="text-light">
-									<small>Forgot password?</small>
+									<small>Quên mật khẩu ?</small>
 								</a>
 							</div>
 						</div>

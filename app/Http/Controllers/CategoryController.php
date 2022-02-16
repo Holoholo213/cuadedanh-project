@@ -38,19 +38,13 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $store = $this->categoryService->createCategory($request->all());
-        if(!$store){
-            $noti = [
-                'message' => 'Không thể lưu dữ liệu',
-                'type' => 'error'
-            ];
-        } else {
-            $noti = [
-                'message' => 'Lưu dữ liệu thành công',
-                'type' => 'success'
-            ];
+        try {
+            $store = $this->categoryService->createCategory($request->all());
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            dd($th);
         }
-        return redirect()->back()->with($noti);
+        
     }
 
     /**
@@ -62,19 +56,12 @@ class CategoryController extends Controller
      */
     public function update($id, Request $request)
     {
-        $edit = $this->categoryService->updateCategory($id, $request->all());
-        if(!$edit){
-            $noti = [
-                'message' => 'Không thể lưu dữ liệu',
-                'type' => 'error'
-            ];
-        } else {
-            $noti = [
-                'message' => 'Cập nhật dữ liệu thành công',
-                'type' => 'success'
-            ];
+        try {
+            $edit = $this->categoryService->updateCategory($id, $request->all());
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            dd($th);
         }
-        return redirect()->back()->with($noti);
     }
 
     /**
@@ -85,18 +72,12 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $destroy = $this->categoryService->destroyCategory($id);
-        if(!$destroy){
-            $noti = [
-                'message' => 'Không thể lưu dữ liệu',
-                'type' => 'error'
-            ];
-        } else {
-            $noti = [
-                'message' => 'Xóa dữ liệu thành công',
-                'type' => 'success'
-            ];
+        try {
+            $destroy = $this->categoryService->destroyCategory($id);
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            dd($th);
         }
-        return redirect()->back()->with($noti);
+        
     }
 }

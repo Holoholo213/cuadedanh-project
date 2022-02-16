@@ -6,6 +6,8 @@ use App\Http\Requests\StoreIngredientRequest;
 use App\Http\Requests\UpdateIngredientRequest;
 use App\Models\Ingredient;
 use App\Services\IngredientService;
+use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
 
 class IngredientController extends Controller
 {
@@ -40,9 +42,17 @@ class IngredientController extends Controller
      * @param  \App\Http\Requests\StoreIngredientRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreIngredientRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            "name" => "required"
+        ]);
+        try {
+            $this->ingredientService->createIngredient($validate);
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
 
     /**
@@ -74,9 +84,17 @@ class IngredientController extends Controller
      * @param  \App\Models\Ingredient  $ingredient
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateIngredientRequest $request, Ingredient $ingredient)
+    public function update(Request $request, $ingredientId)
     {
-        //
+        $validate = $request->validate([
+            "name" => "required"
+        ]);
+        try {
+            $this->ingredientService->updateIngredient($ingredientId, $validate);
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
 
     /**
@@ -85,8 +103,13 @@ class IngredientController extends Controller
      * @param  \App\Models\Ingredient  $ingredient
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Ingredient $ingredient)
+    public function destroy($ingredientId)
     {
-        //
+        try {
+            $this->ingredientService->destroyIngredient($ingredientId);
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            dd($th->message);
+        }
     }
 }

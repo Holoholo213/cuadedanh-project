@@ -35,17 +35,6 @@ class PostService {
 
 	public function createPost(array $data){
 
-		if(isset($data["publish"])){
-			$data["publish"] = "1";
-		} else {
-			$data["publish"] = "0";
-		}
-		if(isset($data["favorite"])){
-			$data["favorite"] = "1";
-		} else {
-			$data["favorite"] = "0";
-		}
-
 		$slug = $this->slugHelper->slugName($data["title"]);
 
 		$content = $this->imageHandle($data["content"]);
@@ -56,10 +45,15 @@ class PostService {
 			"category_id" => $data["category_id"],
 			"description" => $data["description"],
 			"published_at" => $data["published_at"],
-			"publish" => $data["publish"],
 			"content" => $content,
-			"favorite" => $data["favorite"],
 		];
+
+		if(isset($data["publish"])){
+			$fields["publish"] = $data["publish"];
+		} 
+		if(isset($data["favorite"])){
+			$fields["favorite"] = $data["favorite"];
+		} 
 
 		if(isset($data["thumb_img"])){
 			$fileName = $this->imageHelper->storeImage($data["thumb_img"], "posts/thumb");
@@ -70,19 +64,8 @@ class PostService {
 	}
 
 	public function updatePost($postId, array $data){
-		if(isset($data["publish"])){
-			$data["publish"] = "1";
-		} else {
-			$data["publish"] = "0";
-		}
-		if(isset($data["favorite"])){
-			$data["favorite"] = "1";
-		} else {
-			$data["favorite"] = "0";
-		}
 
 		$slug = $this->slugHelper->slugName($data["title"]);
-
 		$content = $this->imageHandle($data["content"]);
 
 		$fields = [
@@ -91,12 +74,21 @@ class PostService {
 			"category_id" => $data["category_id"],
 			"description" => $data["description"],
 			"published_at" => $data["published_at"],
-			"publish" => $data["publish"],
 			"content" => $content,
-			"favorite" => $data["favorite"],
 		];
 
+		if(isset($data["publish"])){
+			$fields["publish"] = $data["publish"];
+		} 
+		if(isset($data["favorite"])){
+			$fields["favorite"] = $data["favorite"];
+		}
+
 		if(isset($data["thumb_img"])){
+			$currentPost = Post::find($postId);
+			if(isset($currentPost->thumb_img)){
+				unlink($currentPost->thumb_img);
+			}
 			$fileName = $this->imageHelper->storeImage($data["thumb_img"], "posts/thumb");
 			$fields["thumb_img"] = $fileName;
 		}
@@ -124,7 +116,12 @@ class PostService {
                 $filename = uniqid();
 				$filepath = "/posts/images/".$filename.".".$mimetype;
 				try {
-					$image = Image::make($src)->encode($mimetype, 100)->save(public_path($filepath));
+					$image = Image::make($src)
+										->resize(300, null, function ($constraint) {
+											$constraint->aspectRatio();
+										})
+										->encode($mimetype, 100)
+										->save(public_path($filepath));
 				} catch (\Throwable $th) {
 					dd($th);
 				}

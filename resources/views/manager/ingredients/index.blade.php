@@ -46,7 +46,7 @@ $sub='ingredients';
 											</button>
 										</td>
 										<td>
-											<form action="{{ route('category.destroy', $item->id) }}" method="POST">
+											<form action="{{ route("ingredients.destroy", $item->id) }}" method="POST">
 												@csrf
 												@method('delete')
 												<button type="submit" class="btn btn-sm">
@@ -68,7 +68,7 @@ $sub='ingredients';
 							<h4 class="card-title">Thêm nguyên liệu</h4>
 						</div>
 						<div class="card-body">
-							<form action={{ route('category.store') }} method="POST">
+							<form action={{ route("ingredients.store") }} method="POST">
 								@csrf
 								<div class="form-group">
 									<input type="text" class="form-control form-control-border" id="name" placeholder="Tên nguyên liệu" name="name">
@@ -90,6 +90,7 @@ $sub='ingredients';
 							</div>
 							<form id="edit_form" method="POST">
 								@csrf
+								@method("PUT")
 								<div class="modal-body">
 									@csrf
 									<div class="form-group">
@@ -125,8 +126,7 @@ $sub='ingredients';
 		} else {
 			var cat_id = 1
 		}
-
+		edit_form.setAttribute('action', `{{ url('/manager/ingredient/update/${id}') }}`)
     }
-
 </script>
 @endsection

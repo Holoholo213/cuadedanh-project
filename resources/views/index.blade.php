@@ -1,7 +1,4 @@
-@php
-$page='Dashboard'
-@endphp
-@extends('layouts/manager/layouts')
+@extends('layouts/guest/layouts')
 @section('content')
-
+	<h2>This is index</h2>
 @endsection
