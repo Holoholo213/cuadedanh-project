@@ -69,11 +69,11 @@ class PostController extends Controller
             "content" => "nullable",
         ]);
 
-        // try {
-        //     $posts = $this->postService->createPost($validate);
-        // } catch (\Throwable $th) {
-        //     dd($th);
-        // }
+        try {
+            $posts = $this->postService->createPost($validate);
+        } catch (\Throwable $th) {
+            dd($th);
+        }
 
         if(isset($request->tag)){
             $tagArrayId = $this->tagService->tagHandling($request->tag);
