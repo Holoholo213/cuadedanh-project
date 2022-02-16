@@ -18,7 +18,7 @@ class CreatePostsTable extends Migration
             $table->string("title");
             $table->unsignedBigInteger("category_id");
             $table->string("slug");
-            $table->string("description");
+            $table->string("description")->nullable();
             $table->string("thumb_img")->nullable();
             $table->boolean("publish")->default(0);
             $table->boolean("favorite")->default(0);
