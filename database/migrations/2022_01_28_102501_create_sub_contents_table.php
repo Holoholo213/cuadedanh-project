@@ -16,8 +16,9 @@ class CreateSubContentsTable extends Migration
         Schema::create('sub_contents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("post_id");
-            $table->text("description")->nullable();
-            $table->string("image_dir");
+            $table->text("content")->nullable();
+            $table->string("image_dir")->nullable();
+            $table->string("img_descrip")->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

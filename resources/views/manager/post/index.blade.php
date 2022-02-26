@@ -71,7 +71,7 @@ $sub='posts';
 					<th style="width: 40px" class="text-center">
 						Status
 					</th>
-					<th style="width: 250px" class="text-center">
+					<th style="width: 160px" class="text-center">
 						Setting
 					</th>
 				</tr>
@@ -86,15 +86,11 @@ $sub='posts';
 						<a>
 							{{ $item->title }}
 						</a>
-						<br>
-						<small>
-							{{ $item->created_at }}
-						</small>
 					</td>
 					<td>
 						{!! Str::limit($item->content, 70) !!}
 					</td>
-					<td class="project_progress">
+					<td class="project_progress text-center">
 						10
 					</td>
 					<td class="project-state">
@@ -112,17 +108,12 @@ $sub='posts';
 						<a class="btn btn-primary btn-sm" href={{ route("post.detail", ["id"=> $item->id, "slug" => $item->slug]) }}>
 							<i class="fas fa-eye">
 							</i>
-							View
+							Xem
 						</a>
 						<a class="btn btn-info btn-sm" href={{ route("post.edit", ["id" => $item->id]) }}>
 							<i class="fas fa-pencil-alt">
 							</i>
-							Edit
-						</a>
-						<a class="btn btn-danger btn-sm" href="#">
-							<i class="fas fa-trash">
-							</i>
-							Delete
+							Sửa
 						</a>
 					</td>
 				</tr>

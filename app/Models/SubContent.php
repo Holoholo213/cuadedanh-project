@@ -13,8 +13,9 @@ class SubContent extends Model
 
     protected $fillable = [
         'post_id',
-        'description',
+        'content',
         'image_dir',
+        'img_descrip',
     ];
 
     protected $hidden = [

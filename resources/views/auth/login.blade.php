@@ -23,7 +23,7 @@
             </div>
 
             <!-- Password -->
-            <div class="mt-4">
+            <div class="mt-4 mb-4">
                 <x-label for="password" :value="__('Password')" />
 
                 <x-input id="password" class="block mt-1 w-full"
@@ -31,6 +31,8 @@
                                 name="password"
                                 required autocomplete="current-password" />
             </div>
+
+            <span onclick="changePassType()">Hiển thị mật khẩu</span>
 
             <!-- Remember Me -->
             <div class="block mt-4">
@@ -54,3 +56,14 @@
         </form>
     </x-auth-card>
 </x-guest-layout>
+
+<script>
+    function changePassType(){
+        var pass = document.getElementById("password");
+        if(pass.type==="password"){
+            pass.type="text";
+        } else{
+            pass.type="password";
+        }
+    }
+</script>

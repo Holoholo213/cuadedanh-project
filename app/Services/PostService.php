@@ -37,22 +37,20 @@ class PostService {
 
 		$slug = $this->slugHelper->slugName($data["title"]);
 
-		$content = $this->imageHandle($data["content"]);
-
 		$fields = [
 			"title" => $data["title"],
 			"slug" => $slug,
 			"category_id" => $data["category_id"],
 			"description" => $data["description"],
 			"published_at" => $data["published_at"],
-			"content" => $content,
+			"keywords" => $data["keyword"]
 		];
 
 		if(isset($data["publish"])){
-			$fields["publish"] = $data["publish"];
+			$fields["publish"] = "1";
 		} 
 		if(isset($data["favorite"])){
-			$fields["favorite"] = $data["favorite"];
+			$fields["favorite"] = "1";
 		} 
 
 		if(isset($data["thumb_img"])){
@@ -66,7 +64,6 @@ class PostService {
 	public function updatePost($postId, array $data){
 
 		$slug = $this->slugHelper->slugName($data["title"]);
-		$content = $this->imageHandle($data["content"]);
 
 		$fields = [
 			"title" => $data["title"],
@@ -74,7 +71,7 @@ class PostService {
 			"category_id" => $data["category_id"],
 			"description" => $data["description"],
 			"published_at" => $data["published_at"],
-			"content" => $content,
+			"keyword" => $data["keyword"]
 		];
 
 		if(isset($data["publish"])){
@@ -92,8 +89,7 @@ class PostService {
 			$fileName = $this->imageHelper->storeImage($data["thumb_img"], "posts/thumb");
 			$fields["thumb_img"] = $fileName;
 		}
-		$update = $this->postRepository->update($postId, $fields);
-		return $slug;
+		return $this->postRepository->update($postId, $fields);
 	}
 
 	public function destroyPost($postId){

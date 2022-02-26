@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ErrorMessage;
+use App\Models\Post;
 use App\Services\CategoryService;
 use App\Services\PostService;
 use App\Services\SubContentService;
 use App\Services\TagService;
 use App\Services\IngredientService;
-use App\Models\Post;
-use Awssat\Visits\DataEngines\RedisEngine;
-use DOMDocument;
+use App\Services\ErrorMessageService;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -19,13 +19,22 @@ class PostController extends Controller
     private $subContentService;
     private $tagService;
     private $ingredientService;
-    public function __construct(CategoryService $categoryService, PostService $postService, SubContentService $subContentService, TagService $tagService, IngredientService $ingredientService)
+    private $errorMessageService;
+
+    public function __construct(
+        CategoryService $categoryService, 
+        PostService $postService, 
+        SubContentService $subContentService, 
+        TagService $tagService, 
+        IngredientService $ingredientService, 
+        ErrorMessageService $errorMessageService)
     {
         $this->categoryService = $categoryService;
         $this->postService = $postService;
         $this->subContentService = $subContentService;
         $this->tagService = $tagService;
         $this->ingredientService = $ingredientService;
+        $this->errorMessageService = $errorMessageService;
     }
 
     /**
@@ -63,36 +72,46 @@ class PostController extends Controller
             "category_id" => "required",
             "publish" => "nullable",
             "favorite" => "nullable",
-            "description" => "required",
+            "description" => "nullable",
             "thumb_img" => "image|mimes:jpeg,png,jpg,gif,svg|max:1024",
             "published_at" => "nullable",
-            "content" => "nullable",
+            "keyword" => "nullable",
         ]);
 
         try {
             $posts = $this->postService->createPost($validate);
-        } catch (\Throwable $th) {
-            dd($th);
-        }
-
-        if(isset($request->tag)){
-            $tagArrayId = $this->tagService->tagHandling($request->tag);
-            foreach($tagArrayId as $item){
-                $posts->tags()->attach($item);
+            dd($posts);
+            foreach ($request->new_content as $key => $value) {
+                $subFields = [];
+                if(isset($request->content[$key])){
+                    $subFields["content"] = $request->content[$key];
+                }
+                if(isset($request->img_dir[$key])){
+                    $subFields["img_dir"] = $request->img_dir[$key];
+                }
+                if(isset($request->img_descrip[$key])){
+                    $subFields["img_descrip"] = $request->img_descrip[$key];
+                }
+                $this->subContentService->create($posts->id, $subFields);
             }
-        }
 
-        if(isset($request->ingredients)){
-            $ingredients = $this->ingredientService->ingredientHandling($request->ingredients);
-            foreach($ingredients as $index => $item){
-                $posts->ingredients()->attach($item, ["values" => $request->values[$index]]);
+            if(isset($request->tag)){
+                $tagArrayId = $this->tagService->tagHandling($request->tag);
+                foreach($tagArrayId as $item){
+                    $posts->tags()->attach($item);
+                }
             }
-        }
 
-        if($posts){
+            if(isset($request->ingredients)){
+                $ingredients = $this->ingredientService->ingredientHandling($request->ingredients);
+                foreach($ingredients as $index => $item){
+                    $posts->ingredients()->attach($item, ["values" => $request->values[$index]]);
+                }
+            }
             return redirect()->route("dashboard");
-        } else {
-            dd("something");
+        } catch (\Throwable $th) {
+            $this->errorMessageService->makeError($th);
+            dd($th);
         }
     }
 
@@ -137,16 +156,60 @@ class PostController extends Controller
             "category_id" => "required",
             "publish" => "nullable",
             "favorite" => "nullable",
-            "description" => "required",
+            "description" => "nullable",
             "thumb_img" => "image|mimes:jpeg,png,jpg,gif,svg|max:1024",
             "published_at" => "nullable",
-            "content" => "nullable",
+            "keyword" => "nullable",
         ]);
+
         try {
-            $post = $this->postService->updatePost($id, $validate);
-            
-            return redirect()->route("post.detail", ["id" => $id, "slug" => $post]);
+            $this->postService->updatePost($id, $validate);
+            $post = Post::find($id);
+            foreach ($request->new_content as $key => $value) {
+                if($value != "true"){
+                    $subFields = [];
+                    if(isset($request->content[$key])){
+                        $subFields["content"] = $request->content[$key];
+                    }
+                    if(isset($request->img_dir[$key])){
+                        $subFields["img_dir"] = $request->img_dir[$key];
+                    }
+                    if(isset($request->img_descrip[$key])){
+                        $subFields["img_descrip"] = $request->img_descrip[$key];
+                    }
+                    
+                    $this->subContentService->update($value, $subFields);
+                } else {
+                    $subFields = [];
+                    if(isset($request->content[$key])){
+                        $subFields["content"] = $request->content[$key];
+                    }
+                    if(isset($request->img_dir[$key])){
+                        $subFields["img_dir"] = $request->img_dir[$key];
+                    }
+                    if(isset($request->img_descrip[$key])){
+                        $subFields["img_descrip"] = $request->img_descrip[$key];
+                    }
+                    $this->subContentService->create($id, $subFields);
+                }
+            }
+
+            if(isset($request->tag)){
+                $tagArrayId = $this->tagService->tagHandling($request->tag);
+                foreach($tagArrayId as $item){
+                    $post->tags()->attach($item);
+                }
+            }
+
+            if(isset($request->ingredients)){
+                $ingredients = $this->ingredientService->ingredientHandling($request->ingredients);
+                foreach($ingredients as $index => $item){
+                    $post->ingredients()->attach($item, ["values" => $request->values[$index]]);
+                }
+            }
+            return redirect()->route("post.detail", ["id" => $id, "slug" => $post->slug]);
         } catch (\Throwable $th) {
+            $this->errorMessageService->makeError($th);
             dd($th);
         }
     }
@@ -163,6 +226,7 @@ class PostController extends Controller
             $this->postService->destroyPost($id);
             return redirect()->route("post.index");
         } catch (\Throwable $th) {
+            $this->errorMessageService->makeError($th);
             dd($th);
         }
     }

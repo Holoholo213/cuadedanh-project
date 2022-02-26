@@ -20,7 +20,8 @@ class Post extends Model
         'publish',
         'content',
         'favorite',
-        'published_at'
+        'published_at',
+        'keyword'
     ];
 
     protected $hidden = [
@@ -62,7 +63,7 @@ class Post extends Model
     }
 
     public function subContent(){
-        return $this->hasMany(SubContent::class, 'post_id', 'id')->select("description", "image_dir");
+        return $this->hasMany(SubContent::class, 'post_id', 'id')->select("id", "content", "image_dir", "img_descrip");
     }
 
     public function ingredients(){

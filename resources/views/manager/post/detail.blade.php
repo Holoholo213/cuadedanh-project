@@ -79,7 +79,15 @@
 
                 </div>
 
-                {!! $post->content !!}
+                @foreach ($post->subContent as $item)
+                    {!! $item->content !!}
+                    @isset($item->image_dir)
+                        <div class="mb-3">
+                            <img src={{ asset($item->image_dir) }} alt="" class="img-fluid">
+                            <small>{{ $item->img_descrip }}</small>
+                        </div>
+                    @endisset
+                @endforeach
 
             </div>
             <div class="col-12 col-md-12 col-lg-3 order-1 order-md-2">

@@ -97,11 +97,25 @@ img {
     color: #dc3545;
 }
 
-.img-content{
+.img-content {
     max-width: 450px;
     margin: 0 auto 30px;
 }
 
-.sub-content{
+.sub-content {
     margin-bottom: 30px;
+}
+
+.showImg {
+    height: 250px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #ffffff;
+    padding: 5px 10px;
+}
+
+.showImg span {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ababab;
 }
