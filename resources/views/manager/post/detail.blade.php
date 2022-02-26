@@ -149,7 +149,7 @@
 
                 <div class="text-center mt-5 mb-3">
                     <a href={{ route("post.edit", ["id" => $post->id]) }} class="btn btn-sm btn-primary">Chỉnh sửa</a>
-                    <a href="#" class="btn btn-sm btn-warning">Xóa</a>
+                    <a href={{ route("post.destroy", ["id" => $post->id]) }} class="btn btn-sm btn-warning">Xóa</a>
                 </div>
             </div>
         </div>
