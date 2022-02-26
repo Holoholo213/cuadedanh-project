@@ -80,7 +80,7 @@ class PostController extends Controller
 
         try {
             $posts = $this->postService->createPost($validate);
-            dd($posts);
+
             foreach ($request->new_content as $key => $value) {
                 $subFields = [];
                 if(isset($request->content[$key])){
