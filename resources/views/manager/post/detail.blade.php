@@ -149,7 +149,11 @@
 
                 <div class="text-center mt-5 mb-3">
                     <a href={{ route("post.edit", ["id" => $post->id]) }} class="btn btn-sm btn-primary">Chỉnh sửa</a>
-                    <a href={{ route("post.destroy", ["id" => $post->id]) }} class="btn btn-sm btn-warning">Xóa</a>
+                    <form action={{ route("post.destroy", ["id" => $post->id]) }} method="POST">
+                        @csrf
+                        @method("DELETE")
+                        <button class="btn btn-sm btn-warning">Xóa</button>
+                    </form>
                 </div>
             </div>
         </div>
