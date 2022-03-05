@@ -82,16 +82,32 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" style="margin-bottom: 20px">
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <label for="thumb_img">Thumb Image</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" id="thumb_img" name="thumb_img" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+                {{-- <div class="showImg" id="thumb_preview">
+                    <span id="thumb_preview_text">
+                        Chưa có ảnh thumb
+                    </span>
+                </div> --}}
+            </div>
+        
             <div class="col-12 col-md-6">
                 <div class="form-group">
                     <label for="description">Miêu tả</label>
                     <input type="text" class="form-control" id="description" placeholder="Miêu tả" name="description">
                 </div>
-
+        
                 <div class="form-group">
                     <label>Ngày công khai</label>
-
+        
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
@@ -99,32 +115,10 @@
                         <input type="date" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" name="published_at">
                     </div>
                 </div>
-            </div>
-
-            <div class="col-12 col-md-6">
+        
                 <div class="form-group">
                     <label for="keyword">Từ khóa</label>
                     <input type="text" class="form-control" id="keyword" placeholder="Miêu tả" name="keyword">
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-4">
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="thumb_img">Thumb Image</label>
-                    <div class="input-group">
-                        <div class="custom-file">
-                            <input type="file" id="thumb_img" name="thumb_img">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="showImg">
-                    <span id="preview">
-                        Chưa có ảnh thumb
-                    </span>
                 </div>
             </div>
         </div>
@@ -153,6 +147,16 @@
                             <input type="file" id="img_dir" name="img_dir[]">
                         </div>
                     </div>
+                    @if ($item->image_dir)           
+                        <div class="img-box">
+                            <img src={{ asset($item->image_dir) }} alt="{{ $item->img_descrip }}" class="img-thumbnail" /> 
+                        </div>
+                    @endif
+                </div>
+
+                <div class="form_group">
+                    <label for="img_descrip">Miêu tả</label>
+                    <input type="text" class="form-control" id="img_descrip" placeholder="Miêu tả ảnh" name="img_descrip[]" value="{{ $item->img_descrip }}">
                 </div>
             </div>
         </div>

@@ -13,13 +13,13 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="title">Tiêu đề</label>
-                    <input type="text" class="form-control @error("title") is-invalid @enderror" id="title" placeholder="Tiêu đề" name="title">
+                    <input type="text" class="form-control @error(" title") is-invalid @enderror" id="title" placeholder="Tiêu đề" name="title">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Danh mục</label>
-                    <select class="custom-select @error("category_id") is-invalid @enderror" name="category_id">
+                    <select class="custom-select @error(" category_id") is-invalid @enderror" name="category_id">
                         <option disabled selected>Chọn danh mục</option>
                         @foreach($categories as $item)
                             <option value={{ $item->id }}> {{ $item->name }} </option>
@@ -61,7 +61,6 @@
             </div>
         </div>
 
-
         <div class="row" style="margin-bottom: 20px">
             <div class="col-12 col-md-6">
                 <div class="d-flex align-items-end">
@@ -84,7 +83,23 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" style="margin-bottom: 20px">
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <label for="thumb_img">Thumb Image</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" id="thumb_img" name="thumb_img" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+                {{-- <div class="showImg" id="thumb_preview">
+                    <span id="thumb_preview_text">
+                        Chưa có ảnh thumb
+                    </span>
+                </div> --}}
+            </div>
+
             <div class="col-12 col-md-6">
                 <div class="form-group">
                     <label for="description">Miêu tả</label>
@@ -93,7 +108,7 @@
 
                 <div class="form-group">
                     <label>Ngày công khai</label>
-                
+
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
@@ -101,32 +116,10 @@
                         <input type="date" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" name="published_at">
                     </div>
                 </div>
-            </div>
 
-            <div class="col-12 col-md-6">
                 <div class="form-group">
                     <label for="keyword">Từ khóa</label>
                     <input type="text" class="form-control" id="keyword" placeholder="Miêu tả" name="keyword">
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-4">
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="thumb_img">Thumb Image</label>
-                    <div class="input-group">
-                        <div class="custom-file">
-                            <input type="file" id="thumb_img" name="thumb_img">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="showImg">
-                    <span id="preview">
-                        Chưa có ảnh thumb
-                    </span>
                 </div>
             </div>
         </div>
@@ -157,7 +150,7 @@
                 </div>
                 <div class="form_group">
                     <label for="img_descrip">Miêu tả</label>
-                    <input type="text" class="form-control" id="img_descrip" placeholder="Miêu tả ảnh" name="img_descrip">
+                    <input type="text" class="form-control" id="img_descrip" placeholder="Miêu tả ảnh" name="img_descrip[]">
                 </div>
             </div>
         </div>
@@ -185,5 +178,15 @@
     $(document).ready(function () {
         $('.summernote').summernote();
     });
+    function previewFile(input){
+        var file = $("#thumb_img").get(0).files[0];
+        if(file){
+            var reader = new FileReader();
+            reader.onload = function(){
+                $("#thumb_preview").attr("src", reader.result);
+            }
+            reader.readAsDataURL(file);
+        }
+    }
 </script>
 @endsection
