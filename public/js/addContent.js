@@ -25,6 +25,11 @@ $(function () {
                                 </div>
                             </div>
                         </div>
+
+                        <div class="form_group">
+                            <label for="img_descrip">Miêu tả</label>
+                            <input type="text" class="form-control" id="img_descrip" placeholder="Miêu tả ảnh" name="img_descrip[]">
+                        </div>
                     </div>
                 </div>
             `
