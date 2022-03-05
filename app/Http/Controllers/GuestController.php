@@ -16,9 +16,9 @@ class GuestController extends Controller
     }
     public function index(){
         try {
-            $posts = Post::orderBy('published_at', 'DESC')->paginate(4);
-            $favorites = Post::orderBy('published_at', 'DESC')->where('favorite', '1')->paginate(3);
-            $random_post = Post::inRandomOrder()->paginate(5);
+            $posts = Post::orderBy('published_at', 'DESC')->where('publish', '1')->paginate(4);
+            $favorites = Post::orderBy('published_at', 'DESC')->where('publish', '1')->where('favorite', '1')->paginate(3);
+            $random_post = Post::inRandomOrder()->where('publish', '1')->paginate(5);
             return view("index", compact('posts', 'favorites', 'random_post'));
         } catch (\Throwable $th) {
             throw $th;
