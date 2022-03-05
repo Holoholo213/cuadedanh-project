@@ -86,7 +86,7 @@
     <!-- Posts List -->
     <section>
         <ul class="posts">
-            @if (cout($random_post) > 0)
+            @if (count($random_post) > 0)
                 @foreach($random_post as $item)
                     <li>
                         <article>
