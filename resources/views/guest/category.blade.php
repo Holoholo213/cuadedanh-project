@@ -30,6 +30,7 @@
 						<img src="http://cuadedanh-project.test/posts/thumb/1646049915.jpg" alt="">
 					</a>
 				</article>
+				
 			</div>
 		</div>
 	</div>
