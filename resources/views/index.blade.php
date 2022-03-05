@@ -11,8 +11,8 @@
         </header>
     </section>
 
-    @if (count($favorites) > 0)
-        @foreach ($favorites as $item)
+    @if (count($posts) > 0)
+        @foreach ($posts as $item)
             <article class="post">
                 <header>
                     <div class="title">
@@ -60,8 +60,8 @@
     <section>
         <div class="mini-posts">
             <!-- Mini Post -->
-            @if (count($posts) > 0)
-                @foreach($posts as $item)
+            @if (count($favorites) > 0)
+                @foreach($favorites as $item)
                     <article class="mini-post">
                         <header>
                             <h3><a href={{ route('guest.show', ['slug' => $item->slug]) }}>{{ $item->title }}</a></h3>
