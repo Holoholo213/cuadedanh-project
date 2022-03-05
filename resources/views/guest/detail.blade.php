@@ -34,6 +34,7 @@
 					<span class="image featured">
 						<img src={{ asset($item->image_dir) }} />
 					</span>
+					<small>{{ $item->img_descrip }}</small>
 					@endif
 				</div>
 			@endforeach
