@@ -165,32 +165,34 @@ class PostController extends Controller
         try {
             $this->postService->updatePost($id, $validate);
             $post = Post::find($id);
-            foreach ($request->new_content as $key => $value) {
-                if($value != "true"){
-                    $subFields = [];
-                    if(isset($request->content[$key])){
-                        $subFields["content"] = $request->content[$key];
+            if(isset($request->new_content) > 0){
+                foreach ($request->new_content as $key => $value) {
+                    if($value != "true"){
+                        $subFields = [];
+                        if(isset($request->content[$key])){
+                            $subFields["content"] = $request->content[$key];
+                        }
+                        if(isset($request->img_dir[$key])){
+                            $subFields["img_dir"] = $request->img_dir[$key];
+                        }
+                        if(isset($request->img_descrip[$key])){
+                            $subFields["img_descrip"] = $request->img_descrip[$key];
+                        }
+                        
+                        $this->subContentService->update($value, $subFields);
+                    } else {
+                        $subFields = [];
+                        if(isset($request->content[$key])){
+                            $subFields["content"] = $request->content[$key];
+                        }
+                        if(isset($request->img_dir[$key])){
+                            $subFields["img_dir"] = $request->img_dir[$key];
+                        }
+                        if(isset($request->img_descrip[$key])){
+                            $subFields["img_descrip"] = $request->img_descrip[$key];
+                        }
+                        $this->subContentService->create($id, $subFields);
                     }
-                    if(isset($request->img_dir[$key])){
-                        $subFields["img_dir"] = $request->img_dir[$key];
-                    }
-                    if(isset($request->img_descrip[$key])){
-                        $subFields["img_descrip"] = $request->img_descrip[$key];
-                    }
-                    
-                    $this->subContentService->update($value, $subFields);
-                } else {
-                    $subFields = [];
-                    if(isset($request->content[$key])){
-                        $subFields["content"] = $request->content[$key];
-                    }
-                    if(isset($request->img_dir[$key])){
-                        $subFields["img_dir"] = $request->img_dir[$key];
-                    }
-                    if(isset($request->img_descrip[$key])){
-                        $subFields["img_descrip"] = $request->img_descrip[$key];
-                    }
-                    $this->subContentService->create($id, $subFields);
                 }
             }
 

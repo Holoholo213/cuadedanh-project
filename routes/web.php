@@ -21,7 +21,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [GuestController::class, "index"])->name("guest.index");
+Route::view("/", "layouts.guest.header");
+
+Route::controller(GuestController::class)->prefix('/')->group(function () {
+    Route::get('/', "index")->name("guest.index");
+    Route::get("/category/{slug}", 'category')->name('guest.category');
+    Route::get('/{slug}', 'show')->name('guest.show');
+});
 
 Route::middleware(["auth"])->prefix("/manager")->group(function(){
 

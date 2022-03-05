@@ -28,19 +28,20 @@ $link='category.index';
 					<th style="width: 10px">
 						#
 					</th>
-					<th style="width: 100px">
+					<th style="width: 150px">
 						Tiêu đề
 					</th>
 					<th>
-						Nội dung
+						Miêu tả
 					</th>
 					<th style="width: 50px">
 						View
 					</th>
-					<th style="width: 40px" class="text-center">
-						Status
+					<th style="width: 110px" class="text-center">
+						Trạng thái
 					</th>
-					<th style="width: 250px">
+					<th style="width: 170px" class="text-center">
+						Cài đặt
 					</th>
 				</tr>
 			</thead>
@@ -54,16 +55,14 @@ $link='category.index';
 						<a>
 							{{ $item->title }}
 						</a>
-						<br>
-						<small>
-							{{ date("d-m-Y", strtotime($item->created_at)) }}
-						</small>
 					</td>
 					<td>
-						{!! Str::limit($item->content, 70) !!}
+						{{ $item->description }}
 					</td>
 					<td class="project_progress">
-						10
+						<span class="badge badge-info">
+							10
+						</span>
 					</td>
 					<td class="project-state">
 						@if ($item->publish == 0)
@@ -78,19 +77,14 @@ $link='category.index';
 					</td>
 					<td class="project-actions text-right">
 						<a class="btn btn-primary btn-sm" href={{ route("post.detail", ["id"=> $item->id, "slug" => $item->slug]) }}>
-							<i class="fas fa-folder">
+							<i class="fas fa-eye">
 							</i>
 							View
 						</a>
-						<a class="btn btn-info btn-sm" href="#">
+						<a class="btn btn-info btn-sm" href={{ route("post.edit", ["id" => $item->id]) }}>
 							<i class="fas fa-pencil-alt">
 							</i>
 							Edit
-						</a>
-						<a class="btn btn-danger btn-sm" href="#">
-							<i class="fas fa-trash">
-							</i>
-							Delete
 						</a>
 					</td>
 				</tr>

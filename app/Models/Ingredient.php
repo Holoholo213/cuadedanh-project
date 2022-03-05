@@ -22,4 +22,8 @@ class Ingredient extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function amount(){
+        return $this->belongsToMany(Post::class)->withPivot('values');
+    }
 }

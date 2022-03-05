@@ -147,8 +147,8 @@
                     </div>
                 </div>
 
-                <div class="text-center mt-5 mb-3">
-                    <a href={{ route("post.edit", ["id" => $post->id]) }} class="btn btn-sm btn-primary">Chỉnh sửa</a>
+                <div class="d-flex justify-content-center mt-5 mb-3">
+                    <a href={{ route("post.edit", ["id" => $post->id]) }} class="btn btn-sm btn-primary mr-3">Chỉnh sửa</a>
                     <form action={{ route("post.destroy", ["id" => $post->id]) }} method="POST">
                         @csrf
                         @method("DELETE")

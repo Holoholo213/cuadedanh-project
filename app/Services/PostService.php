@@ -75,10 +75,10 @@ class PostService {
 		];
 
 		if(isset($data["publish"])){
-			$fields["publish"] = $data["publish"];
+			$fields["publish"] = '1';
 		} 
 		if(isset($data["favorite"])){
-			$fields["favorite"] = $data["favorite"];
+			$fields["favorite"] = '1';
 		}
 
 		if(isset($data["thumb_img"])){
