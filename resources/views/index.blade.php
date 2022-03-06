@@ -28,7 +28,7 @@
                     @if ($item->thumb_img)
                     <img src={{ asset($item->thumb_img) }} alt="">
                     @else
-                    <img src="images/pic01.jpg" alt="">
+                    <img src={{ asset('guest/images/pic01.jpg') }} alt="{{ asset($item->title) }}">
                     @endif
                 </a>
                 <p>
